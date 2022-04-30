@@ -15,8 +15,9 @@ module.exports = {
             
         },
         port: 80,
-        headers: {
-            "Access-Control-Allow-Origin": "*",
-         }
+        // headers: {
+        //     "Access-Control-Allow-Origin": "*",
+        //      "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+        //  }
     }
 };
