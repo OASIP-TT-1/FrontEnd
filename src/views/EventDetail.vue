@@ -6,7 +6,7 @@ let { params } = useRoute()
 const eventId = params.id
 const event = ref({})
 const getEventById = async () => {
-  const res = await fetch('http://10.4.56.124:81/api/events/' + eventId)
+  const res = await fetch('http://10.4.56.124:8081/api/events/' + eventId)
   if (res.status === 200) {
     event.value = await res.json()
     event.value.eventStartTime = new Date(

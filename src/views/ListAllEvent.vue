@@ -3,7 +3,7 @@ import { ref, onBeforeMount } from 'vue'
 
 const events = ref([])
 const getEvents = async () => {
-  const res = await fetch('http://10.4.56.124:81/api/events')
+  const res = await fetch('http://10.4.56.124:8081/api/events')
   if (res.status === 200) {
     events.value = await res.json()
     for (let event of events.value) {
