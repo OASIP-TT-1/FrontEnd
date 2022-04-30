@@ -43,7 +43,7 @@ const goBack = () => appRouter.go(-1)
         <br>
         <h3>{{ event.bookingName }}</h3>
         <p>{{ event.bookingEmail }}</p>
-        <h5>{{ event.eventCategoryName }}</h5>
+        <h5 class="ml-3 text-sm">{{ event.eventCategoryName }}</h5>
       </div>
       <div class="basis-1/2 p-10">
         <p class="font-semibold">Appointment Date</p>
