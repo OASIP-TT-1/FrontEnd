@@ -12,7 +12,11 @@ module.exports = {
                 "changeOrigin": true,
                 "secure": false
             },
+            
         },
         port: 80,
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+         }
     }
 };
