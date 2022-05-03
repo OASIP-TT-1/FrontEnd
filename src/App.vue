@@ -33,13 +33,14 @@
         <div>
           <div class="">
             <div id="addhome" class="">
+              <router-link :to="{ name: 'AddEvent'}">
               <button
                 type="button"
-                class="btn btn-info"
-                style="opacity: 1; color: white"
+                style="opacity: 1; color: white; background-color:#7A84B7; padding: 8px; border-radius: 7px;"
               >
                 Add Event
               </button>
+              </router-link>
             </div>
             <div id="option">
               <a>You can create your event here</a>
@@ -58,8 +59,7 @@
             <div id="allevents">
                <button
                 type="button"
-                class="btn btn-primary"
-                style="opacity: 1; color: white"
+                style="opacity: 1; color: white; background-color:#7A84B7; padding: 8px; border-radius: 7px"
               >
                 All Events 
               </button>
@@ -110,6 +110,8 @@
 html,
 body {
   background: url(./assets/images/background/background.jpg);
+    background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 #logo {
   margin-top: -10px;
