@@ -1,16 +1,12 @@
-#base image
-FROM node:12.18.1-alpine
-
-#set working directory
+FROM node:lts-alpine as build-stage
 WORKDIR /app
-
-#add /app/node_modules/.bin to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
-
-#install and cache app dependencies
 COPY package.json /app/package.json
 RUN npm install
-RUN npm install @vue/cli -g
+COPY . /app
+RUN npm run build
 
-#start app
-CMD ["npm", "run", "serve"]
+FROM nginx as production-stage
+RUN mkdir /app
+COPY --from=build-stage /app/dist /usr/share/nginx/html
+COPY default.conf /etc/nginx/conf.d/default.conf
+CMD ["nginx", "-g", "daemon off;"]

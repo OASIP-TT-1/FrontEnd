@@ -29,6 +29,9 @@ const deleteEvent = async (eventId) => {
   console.log(eventId)
   console.log(confirms)
   if(confirms){
+  // const res = await fetch(`http://localhost:8080/api/events/${eventId}`, {
+  //   method: 'DELETE'
+  // })
   const res = await fetch(`http://10.4.56.124:8081/api/events/${eventId}`, {
     method: 'DELETE'
   })
@@ -81,6 +84,7 @@ const deleteEvent = async (eventId) => {
     
   </div> -->
   <ListallComponent :events="events" @deleteEvent="deleteEvent" ></ListallComponent>
+  <!-- <div></div> -->
 </template>
 
 

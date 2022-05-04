@@ -1,11 +1,14 @@
 <script setup>
-defineProps({
+import { ref } from 'vue'
+defineEmits(['deleteEvent'])
+const props = defineProps({
   events: {
     type: Array,
     require: true
   }
 })
-defineEmits(['deleteEvent'])
+// console.log(props.events.value)
+
 
 </script>
  
