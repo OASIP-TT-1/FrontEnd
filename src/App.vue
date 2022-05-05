@@ -1,18 +1,5 @@
 <script setup>
-// import ListAllEvent from './components/ListAllEvent.vue'
 
-// const events = ref([])
-// const getEvents = async () => {
-//   const res = await fetch('http://localhost:80/api/events')
-//   if (res.status === 200) {
-//     events.value = await res.json()
-//     console.log(events.value)
-//   } else console.log('error, cannot get data')
-// }
-// onBeforeMount(async () => {
-//   await getEvents()
-//   console.log(typeof events.value[0].eventStartTime)
-// })
 </script>
 
 <template>
@@ -71,7 +58,7 @@
 
       <div id="listallevent" class=" basis-1/2 mt-6 ml-5">
         <div>
-        <router-view> 
+        <router-view :key="$route.fullPath"> 
 
         </router-view>
       </div>
