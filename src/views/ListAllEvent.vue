@@ -5,8 +5,8 @@ import ListallComponent from '../components/ListallComponent.vue'
 const events = ref([])
 const getEvents = async () => {
   // const res = await fetch('http://localhost:8080/api/events')
-  // const res = await fetch('http://10.4.56.124:8081/api/events')
-  const res = await fetch(`${process.env.VITE_BACK_URL}/api/events`)
+  const res = await fetch('http://10.4.56.124:8081/api/events')
+  // const res = await fetch(`${process.env.VITE_BACK_URL}/api/events`)
   if (res.status === 200) {
     events.value = await res.json()
     for (let event of events.value) {
