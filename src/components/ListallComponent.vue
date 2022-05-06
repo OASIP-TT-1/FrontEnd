@@ -18,10 +18,8 @@ const formatDate = (dateTime) => {
 }
 
 const formatTime = (dateTime) => {
-  return `${dateTime.getHours()}.${dateTime.getMinutes()} min.`
+  return `${dateTime.getHours()}:${dateTime.getMinutes()} min.`
 }
-
-
 
 </script>
  

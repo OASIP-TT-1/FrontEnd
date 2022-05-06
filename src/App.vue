@@ -58,9 +58,8 @@
 
       <div id="listallevent" class=" basis-1/2 mt-6 ml-5">
         <div>
-        <router-view :key="$route.fullPath"> 
-
-        </router-view>
+        <router-view> </router-view>
+        <!-- <router-view :key="$route.fullPath"> </router-view> -->
       </div>
         <!-- <ListAllEvent></ListAllEvent> -->
         

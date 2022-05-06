@@ -3,7 +3,7 @@ import ListAllEvent from '../views/ListAllEvent.vue'
 import EventDetail from '../views/EventDetail.vue'
 import AddEvent from '../views/AddEvent.vue'
 
-const history = createWebHistory()
+const history = createWebHistory('/tt1/')
 const routes = [
     { path: '/', name: 'ListAll', component: ListAllEvent },
     { path: '/events/:id', name: 'EventDetail', component: EventDetail },

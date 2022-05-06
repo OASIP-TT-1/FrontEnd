@@ -5,7 +5,9 @@ import { useRouter } from 'vue-router';
 const categories = ref([])
 const getCategory = async () => {
   // const res = await fetch('http://localhost:8080/api/events')
-  const res = await fetch('http://10.4.56.124:8081/api/categories')
+  // const res = await fetch('http://10.4.56.124:8081/api/categories')
+  const res = await fetch(`${import.meta.env.VITE_BACK_URL}/categories`)
+
   if (res.status === 200) {
     categories.value = await res.json()
     console.log(categories.value)
@@ -31,9 +33,6 @@ const eventDuration = computed(() => {
 const note = ref('')
 
 let isBlank = ref(false)
-const changeDuration = () => {
-
-} 
 
 const addEvent = () => {
   if(bookingName.value == ''|| bookingEmail.value == '' || eventCategory.value == '' || eventStartTime.value == '' ) {
@@ -65,7 +64,7 @@ const addEvent = () => {
 
 const addEventToDB = async (newEvent) => {
   console.log(newEvent)
-  const res = await fetch('http://10.4.56.124:8081/api/events', {
+  const res = await fetch(`${import.meta.env.VITE_BACK_URL}/events`, {
     method: 'POST',
     headers: {
       'content-type': 'application/json'

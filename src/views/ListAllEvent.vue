@@ -5,8 +5,8 @@ import ListallComponent from '../components/ListallComponent.vue'
 const events = ref([])
 const getEvents = async () => {
   // const res = await fetch('http://localhost:8080/api/events')
-  const res = await fetch('http://10.4.56.124:8081/api/events')
-  // const res = await fetch(`${process.env.VITE_BACK_URL}/api/events`)
+  // const res = await fetch('http://10.4.56.124:8081/api/events')
+  const res = await fetch(`${import.meta.env.VITE_BACK_URL}/events`)
   if (res.status === 200) {
     events.value = await res.json()
     for (let event of events.value) {
@@ -21,6 +21,7 @@ const getEvents = async () => {
 onBeforeMount(async () => {
   await getEvents()
   console.log(events)
+  
 })
 
 const deleteEvent = async (eventId) => {
@@ -28,7 +29,7 @@ const deleteEvent = async (eventId) => {
   console.log(eventId)
   console.log(confirms)
   if(confirms){
-  const res = await fetch(`http://10.4.56.124:8081/api/events/${eventId}`, {
+  const res = await fetch(`${import.meta.env.VITE_BACK_URL}/events/${eventId}`, {
     method: 'DELETE'
   })
   if (res.status === 200) {
