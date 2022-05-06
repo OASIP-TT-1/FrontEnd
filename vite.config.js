@@ -1,13 +1,9 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
-// https://vitejs.dev/config/
-// module.exports = {
-//     base: 'https://intproj21.sit.kmutt.ac.th/tt1'
-//   }
 
 export default defineConfig({
-    base: 'https://intproj21.sit.kmutt.ac.th/tt1',
+    base: 'https://intproj21.sit.kmutt.ac.th/tt1/',
   plugins: [vue()],
   server: {
     proxy: {
@@ -40,3 +36,9 @@ export default defineConfig({
 //     port: 80,
 // }
 // })
+
+
+// https://vitejs.dev/config/
+// module.exports = {
+//     base: 'https://intproj21.sit.kmutt.ac.th/tt1'
+//   }
