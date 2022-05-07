@@ -54,7 +54,7 @@ const addEvent = () => {
       date.getMinutes()
     ],
     eventDuration: eventCategory.value.eventDuration,
-    note: note.value
+    eventNote: note.value
   }
   console.log(newEvent)
   addEventToDB(newEvent)
@@ -74,6 +74,7 @@ const addEventToDB = async (newEvent) => {
   console.log(res.status)
   if (res.status === 200) {
     console.log('added sucessfully')
+    console.log(res)
     goAllEvent()
   } else console.log('error, cannot be added')
 }
