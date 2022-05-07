@@ -6,7 +6,12 @@ const events = ref([])
 const getEvents = async () => {
   // const res = await fetch('http://localhost:8080/api/events')
   // const res = await fetch('http://10.4.56.124:8081/api/events')
-  const res = await fetch(`${import.meta.env.VITE_BACK_URL}/events`)
+  const res = await fetch(`${import.meta.env.VITE_BACK_URL}/events`, {
+    headers : { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+       }
+  })
   if (res.status === 200) {
     events.value = await res.json()
     for (let event of events.value) {
