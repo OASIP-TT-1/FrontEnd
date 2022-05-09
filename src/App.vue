@@ -1,80 +1,75 @@
-<script setup>
-
-</script>
+<script setup></script>
 
 <template>
   <div id="gameWindow">
-    <div class="">
-      <nav class="navbar navbar-expand-lg">
-        <div id="logo">
-          <img src="./assets/images/background/logo.png" width="50%" />
+
+    <div class="flex flex-row">
+      <router-link :to="{ name: 'Home' }" class="">
+        <div class="">
+          <img src="./assets/images/background/logo.png" style="width: 62%" />
         </div>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav"></div>
-        </div>
-      </nav>
+      </router-link>
+      
+
+      <div id="addhome" class="flex flex-row gap-4 my-auto -ml-36">
+        <router-link :to="{ name: 'AddEvent' }" class="">
+          <button class="navMenu p-2 px-3 hover:rounded-lg">Reserve</button>
+        </router-link>
+        <router-link :to="{ name: 'ListAll' }">
+          <button class="navMenu p-2 px-3 hover:rounded-lg">List All Event</button>
+        </router-link>
+
+        <router-link :to="{ name: 'ListByCategory' }">
+          <button class="navMenu p-2 px-3 hover:rounded-lg">List By Category</button>
+        </router-link>
+      </div>
     </div>
 
-    <div class="flex flex-row ">
-      <div id="box" class="">
+    <div class="flex flex-row">
+      <!-- <div id="box" class="">
         <div>
           <div class="">
-            <div id="addhome" class="">
-              <router-link :to="{ name: 'AddEvent'}">
-              <button
-                type="button"
-                style="opacity: 1; color: white; background-color:#7A84B7; padding: 8px; border-radius: 7px;"
-              >
-                Add Event
-              </button>
-              </router-link>
-            </div>
             <div id="option">
-              <a>You can create your event here</a>
-              <p>คุณสามารถสร้างอีเวนต์ที่นี้ได้</p>
-              <br />
-              <br />
-              <p class="" style="font-size: 10px; color: #7c7c7c">
-                List by Category -
-              </p>
-              <p>FrontEnd Clinic</p>
-              <p>BackEnd Clinic</p>
-              <p>DevOps-Infra Category</p>
-              <p>Project Management Clinic</p>
+
+              <p style="font-size: 10px; color: #7c7c7c">List by Category -</p>
+
+              <div class="grid grid-cols-2">
+                <img
+                  class="cursor-pointer"
+                  src="./assets/images/front1.png"
+                  width="170"
+                />
+                <img
+                  class="cursor-pointer"
+                  src="./assets/images/back1.png"
+                  width="170"
+                />
+                <img
+                  class="cursor-pointer"
+                  src="./assets/images/data1.png"
+                  width="170"
+                />
+                <img
+                  class="cursor-pointer"
+                  src="./assets/images/dev1.png"
+                  width="170"
+                />
+                <img
+                  class="cursor-pointer"
+                  src="./assets/images/project1.png"
+                  width="170"
+                />
+              </div>
             </div>
-            <router-link :to="{ name: 'ListAll'}">
-            <div id="allevents">
-               <button
-                type="button"
-                style="opacity: 1; color: white; background-color:#7A84B7; padding: 8px; border-radius: 7px"
-              >
-                All Events 
-              </button>
-            </div>
-            </router-link>
           </div>
         </div>
-      </div>
-
-      <div id="listallevent" class=" basis-1/2 mt-6 ml-5">
-        <div>
-        <router-view> </router-view>
-        <!-- <router-view :key="$route.fullPath"> </router-view> -->
-      </div>
-        <!-- <ListAllEvent></ListAllEvent> -->
-        
-        <!-- <div id="viewall">
-
-        <div id="no-events" v-show="events.length == 0">
-
-          <h1 style="color: #5c5c5c">No Scheduled Events</h1>
-        </div>
-
-        <div id="have-events" v-show="events.length > 0">
-          <h1 style="color: #5c5c5c">Have Scheduled Events</h1>
-        </div>
-
       </div> -->
+
+      <div id="listallevent" class="basis-1/2 mt-6 ml-5">
+        <div>
+          <!-- <router-view> </router-view> -->
+          <router-view :key="$route.fullPath"> </router-view>
+        </div>
       </div>
     </div>
   </div>
@@ -95,12 +90,11 @@
 
 html,
 body {
-  background: url(./assets/images/background/background.jpg);
-    background-repeat: no-repeat;
+  background: url(./assets/images/background/background11.gif);
+  background-size: 100%;
+  background-repeat: no-repeat;
   background-attachment: fixed;
-}
-#logo {
-  margin-top: -10px;
+  padding-top: 0.3%;
 }
 #box {
   width: 300px;
@@ -112,16 +106,19 @@ body {
   font-size: 15px;
 }
 
-.navbar-nav {
-  margin-left: -10em;
-  margin-top: 150em;
-  margin-top: -1em;
-  padding: 30px;
-  color: black;
+.navMenu {
+  color: white;
 }
-.navbar {
-  background-color: #383838;
+
+.navMenu:hover {
+  /* border: white solid 2px; */
+  background-color: rgba(255, 255, 255, 0.2);
 }
+
+/* .navMenu:focus-within {
+  border: white solid 2px;
+} */
+
 .selectcategory {
   margin-top: 25px;
 }
@@ -131,7 +128,18 @@ body {
 #option {
   color: #383838;
 }
-#allevents{
-  margin-top: -240px;
+
+#button {
+  size: 5px;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  display: inline;
 }
 </style>

@@ -36,23 +36,16 @@ let isBlank = ref(false)
 
 const addEvent = () => {
   if(bookingName.value == ''|| bookingEmail.value == '' || eventCategory.value == '' || eventStartTime.value == '' ) {
-    console.log('เข้า if')
     isBlank.value = true
     console.log(isBlank.value)
   } else {
     console.log("add")
-    const date = new Date(eventStartTime.value)
+    const date = new Date(eventStartTime.value).toLocaleString('en-GB')
     const newEvent = {
     bookingName: bookingName.value,
     bookingEmail: bookingEmail.value,
-    eventCategory: eventCategory.value,
-    eventStartTime: [
-      date.getFullYear(),
-      date.getMonth() + 1,
-      date.getDate(),
-      date.getHours(),
-      date.getMinutes()
-    ],
+    eventCategoryId: eventCategory.value.id,
+    eventStartTime: date,
     eventDuration: eventCategory.value.eventDuration,
     eventNote: note.value
   }
@@ -72,7 +65,7 @@ const addEventToDB = async (newEvent) => {
     body: JSON.stringify(newEvent)
   })
   console.log(res.status)
-  if (res.status === 200) {
+  if (res.status === 201) {
     console.log('added sucessfully')
     console.log(res)
     goAllEvent()
@@ -87,7 +80,7 @@ const goAllEvent = () => appRouter.push({name: 'ListAll'})
 </script>
  
 <template>
-<div>
+<div class="ml-44">
   <div id="add" class="">
     <div class="error pb-2" v-if="isBlank">
       Please fill out the information completely. | กรุณากรอกข้อมูลให้ครบด้วยค่ะ
@@ -109,12 +102,11 @@ const goAllEvent = () => appRouter.push({name: 'ListAll'})
       <input id="date" type="datetime-local" v-model="eventStartTime" class="border-2 border-gray-200 rounded-md p-1 px-2 mt-1" />
     </div>
     <br />
-    Add Note : (No more than 100 characters / ไม่เกิน 100 ตัวอักษร)
+    Add Note : 
     <input
       class="form-control"
       type="text"
       id="bookingname"
-      maxlength="100"
       v-model="note"
     />
   </div>
