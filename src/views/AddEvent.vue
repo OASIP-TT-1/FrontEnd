@@ -44,7 +44,7 @@ const addEvent = () => {
     const newEvent = {
     bookingName: bookingName.value,
     bookingEmail: bookingEmail.value,
-    eventCategoryId: eventCategory.value.id,
+    eventCategory: eventCategory.value,
     eventStartTime: date,
     eventDuration: eventCategory.value.eventDuration,
     eventNote: note.value
