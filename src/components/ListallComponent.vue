@@ -7,22 +7,13 @@ const props = defineProps({
     require: true
   }
 })
-// console.log(props.events.value)
-
-const monthNames = ["January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
-];
 
 const formatDate = (dateTime) => {
   return dateTime.toLocaleString('en-US', {day: '2-digit', month: 'long', year: 'numeric'})
-  // return `${dateTime.getDate()}  ${
-  //   monthNames[dateTime.getMonth()]
-  // }  ${dateTime.getFullYear()}`
 }
 
 const formatTime = (dateTime) => {
   return dateTime.toLocaleString('th-TH', {hour: '2-digit', minute: '2-digit', })
-  // return `${dateTime.getHours()}:${dateTime.getMinutes()} min.`
 }
 </script>
  
@@ -71,6 +62,16 @@ const formatTime = (dateTime) => {
     </div>
 
     <!-- <router-view :key="$route.fullPath"> </router-view> -->
+    <!-- <div class="page flex">
+      <button class="mr-3">&lt;&lt;</button>
+      <div v-for="page in totalPage">
+        <router-link :to="{ name: 'Page', params: {page: page} }">
+          <button class="pageBtn px-3 p-1 mx-2">{{ page }}</button>
+        </router-link>
+      </div>
+      <button class="ml-3">>></button>
+    </div> -->
+
     
   </div>
 </template>

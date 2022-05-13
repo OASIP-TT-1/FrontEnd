@@ -1,4 +1,10 @@
 <script setup>
+import { ref } from 'vue'
+const eventStartTime = ref('')
+
+const date1 = new Date('2018-06-14T16:00')
+const date2 = new Date('2018-06-14T16:01')
+console.log(date1 > date2)
 
 </script>
  
@@ -11,7 +17,7 @@
               <a>OASIP-TT1</a><br>
               <a>website for booking clinics of INT221 subject</a>
             </div>
-            <router-link :to="{ name: 'ListAll' }">
+            <router-link :to="{ name: 'Page', params: {page: 1} }">
                 <div class="mt-3">
                     <button class="text-white text-lg p-2 px-4 rounded-full bg-orange-500 hover:bg-orange-600">
                         Get Start !
@@ -25,6 +31,8 @@
             <img src="../assets/images/home1.png">
           </div>
         </div>
+
+        
     </div>
 </template>
  

@@ -15,11 +15,12 @@
         <router-link :to="{ name: 'AddEvent' }" class="">
           <button class="navMenu p-2 px-3 hover:rounded-lg">Reserve</button>
         </router-link>
-        <router-link :to="{ name: 'ListAll' }">
+        <router-link :to="{ name: 'Page', params: {page: 1} }">
+        <!-- <router-link :to="{ name: 'ListAll'}"> -->
           <button class="navMenu p-2 px-3 hover:rounded-lg">List All Event</button>
         </router-link>
 
-        <router-link :to="{ name: 'ListByCategory' }">
+        <router-link :to="{ name: 'Category' }">
           <button class="navMenu p-2 px-3 hover:rounded-lg">List By Category</button>
         </router-link>
       </div>

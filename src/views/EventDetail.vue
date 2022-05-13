@@ -14,16 +14,34 @@ const getEventById = async (eventId) => {
   if (res.status === 200) {
     event.value = await res.json()
     event.value.eventStartTime = new Date(event.value.eventStartTime)
-    console.log(event.value.eventStartTime.toLocaleString('en-GB'))
     // console.log(event.value.eventStartTime.toLocaleString('en-US', {day: '2-digit', year: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit', }));
     console.log(event.value)
   } else console.log('error, cannot get data')
 }
 
-onBeforeMount(async () => {  
+const events = ref([])
+const getEvents = async () => {
+  const res = await fetch(`${import.meta.env.VITE_BACK_URL}/events`)
+  if (res.status === 200) {
+    events.value = await res.json()
+    for (let event of events.value) {
+      // console.log(new Date("2022-05-24 11:11:00"))
+      event.eventStartTime = new Date(event.eventStartTime)
+      // const dd = new Date(event.eventStartTime)
+      // console.log(event.eventStartTime)
+    }
   
+  } else console.log('error, cannot get data')
+}
+
+onBeforeMount(async () => {  
   await getEventById(eventId)
+  await getEvents()
+  console.log(events)
 })
+
+// console.log(formatDateTime(event.value.eventStartTime))
+// console.log(event.value.eventStartTime)
 
 
 </script>
@@ -31,7 +49,8 @@ onBeforeMount(async () => {
 <template>
 
   <div class="ml-40">
-    <EventDetailComponent :event="event" @rescheduleEvent="rescheduleEvent"></EventDetailComponent>
+    <EventDetailComponent :event="event" :events="events" @formatDate="formatDate" @formatTime="formatTime" @formatDateTiem="formatDateTime">
+    </EventDetailComponent>
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onBeforeMount, computed } from 'vue'
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router'
 
 const categories = ref([])
 const getCategory = async () => {
@@ -11,47 +11,92 @@ const getCategory = async () => {
   if (res.status === 200) {
     categories.value = await res.json()
     console.log(categories.value)
-  
   } else console.log('error, cannot get data')
 }
 onBeforeMount(async () => {
   await getCategory()
+  await getEvents()
+  console.log(events)
   console.log(categories)
 })
+
+const events = ref([])
+let filterEvents = ref([]) 
+const getEvents = async () => {
+  const res = await fetch(`${import.meta.env.VITE_BACK_URL}/events`)
+  if (res.status === 200) {
+    events.value = await res.json()
+    for (let event of events.value) {
+      event.eventStartTime = new Date(event.eventStartTime)
+      console.log(event.eventStartTime)
+    }
+  } else console.log('error, cannot get data')
+}
 
 const bookingName = ref('')
 const bookingEmail = ref('')
 const eventCategory = ref('')
 const eventStartTime = ref('')
 const eventDuration = computed(() => {
-  if(eventCategory.value == '') {
+  if (eventCategory.value == '') {
     return 0
-  }else {
+  } else {
     return eventCategory.value.eventDuration
   }
 })
 const note = ref('')
 
 let isBlank = ref(false)
+let isInvalidEmail = ref(false)
+let isInvalidDateFuture = ref(false)
+let isInvalidOverLab = ref(false)
 
 const addEvent = () => {
-  if(bookingName.value == ''|| bookingEmail.value == '' || eventCategory.value == '' || eventStartTime.value == '' ) {
+  // console.log(validateEmail(bookingEmail.value))
+  console.log(validateDateFuture(eventStartTime.value))
+  if (
+    bookingName.value == '' ||
+    bookingEmail.value == '' ||
+    eventCategory.value == '' ||
+    eventStartTime.value == ''
+  ) {
     isBlank.value = true
+    isInvalidEmail.value = false
+    isInvalidDateFuture.value = true
+    isInvalidOverLab.value = false
     console.log(isBlank.value)
-  } else {
-    console.log("add")
+  } else if (!validateEmail(bookingEmail.value)) {
+    console.log('เข้า false')
+    console.log(bookingEmail.value)
+    isInvalidEmail.value = true
+    isBlank.value = false
+    isInvalidDateFuture.value = false
+    isInvalidOverLab.value = false
+  } else if(!validateDateFuture(eventStartTime.value)) {
+    console.log('เข้า false date')
+    isInvalidDateFuture.value = true
+    isInvalidOverLab.value = false
+    isInvalidEmail.value = false
+    isBlank.value = false
+  }else if(!validateNonOverlab(eventCategory.value.eventCategoryName, eventCategory.value.eventDuration, eventStartTime.value)) {
+    console.log('เข้า false date')
+    isInvalidOverLab.value = true
+    isInvalidDateFuture.value = false
+    isInvalidEmail.value = false
+    isBlank.value = false
+  }else {
+    console.log('add')
     const date = new Date(eventStartTime.value).toLocaleString('en-GB')
     const newEvent = {
-    bookingName: bookingName.value,
-    bookingEmail: bookingEmail.value,
-    eventCategory: eventCategory.value,
-    eventStartTime: date,
-    eventDuration: eventCategory.value.eventDuration,
-    eventNote: note.value
-  }
-  console.log(newEvent)
-  addEventToDB(newEvent)
-
+      bookingName: bookingName.value,
+      bookingEmail: bookingEmail.value,
+      eventCategory: eventCategory.value,
+      eventStartTime: date,
+      eventDuration: eventCategory.value.eventDuration,
+      eventNote: note.value
+    }
+    console.log(newEvent)
+    addEventToDB(newEvent)
   }
 }
 
@@ -72,46 +117,163 @@ const addEventToDB = async (newEvent) => {
   } else console.log('error, cannot be added')
 }
 
+const validateEmail = (email) => {
+  // const re = /^(?=.{1,64}@)[\\p{L}0-9_-]+(\\.[\\p{L}0-9_-]+)*@[^-][\\p{L}0-9-]+(\\.[\\p{L}0-9-]+)*(\\.[\\p{L}]{2,})$/
+  // const re = /^(?=.{1,64}@)[\\p{L}0-9_-]+(\\.[\\p{L}0-9_-]+)*@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  const re =
+    /^(([^<>()[\]\\.,;:\s*$&!#?@"]+(\.[^<>()[\]\\.,;:\s*$&!#?@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  return re.test(String(email).toLocaleLowerCase())
+}
 
+const validateDateFuture = (dateTime) => {
+  const currentDateTime = new Date()
+  dateTime = new Date(dateTime)
+  return dateTime > currentDateTime ? true : false
+
+}
+
+const validateNonOverlab = (category, duration, startDTNew) => {
+  filterCategory(category)
+  console.log(filterEvents.value)
+
+  startDTNew = new Date(startDTNew)
+  let endDTNew = new Date(startDTNew.getTime() + Number(duration)*60000)
+  // console.log(endDTNew)
+  
+  for(let event of filterEvents.value) {
+    const endDTOld = new Date(new Date(event.eventStartTime.getTime() + Number(duration)*60000))
+    const startDangerRange = new Date(new Date(event.eventStartTime.getTime() - Number(duration)*60000))
+    // console.log(event.eventStartTime)
+    // console.log(startDangerRange)
+    // console.log(endDTOld)
+
+    if(startDTNew > endDTOld) {
+      // console.log('true วันไม่ตรงกัน')
+      return true
+    }else {
+      if(startDTNew < startDangerRange) {
+        // console.log('true วันไม่ตรงกัน')    
+        return true
+      }else {
+        // console.log('flase วันตรงกัน')
+        return false
+      }
+    }
+  }
+  // startDTNew = new Date(startDTNew)
+  // // return true
+}
+
+const filterCategory = (category) => {
+    filterEvents.value = events.value.filter((event) => {
+      return event.eventCategoryName == category
+    })
+}
 
 const appRouter = useRouter()
-const goAllEvent = () => appRouter.push({name: 'ListAll'})
+const goAllEvent = () => appRouter.push({ name: 'Page', params: {page: 1} })
 
+let checked = ref(false)
+let checked_email = ref(false)
+let checked_time = ref(false)
+let checked_date = ref(false)
+let popup = ref(false)
+let create = ref(true)
+// const alldata = computed(() => {
+//   if(isFuture()){
+//     if(allDateTime.value.includes(checktime())){
+//       checked_time.value = true;
+//       return { status: 0 }
+//   }else{
+//   create.value = false;
+//   popup.value = true;
+// })
 </script>
- 
-<template>
-<div class="ml-44">
-  <div id="add" class="">
-    <div class="error pb-2" v-if="isBlank">
-      Please fill out the information completely. | กรุณากรอกข้อมูลให้ครบด้วยค่ะ
-    </div>
-    
-    <div>
-      Booking Name <span class="error">*</span> <input class="form-control mb-3" type="text" v-model="bookingName" />
-      Booking Email <span class="error">*</span> <input class="form-control" type="text" v-model="bookingEmail" />
-    </div>
-    <div class="selectcategory">
-      <select v-model="eventCategory" class="border-2 border-gray-200 rounded-md p-1">
-        <option value="" disabled>Please Select Clinic Category</option>
-        <option v-for="category in categories" :key="category.id" :value="category">{{ category.eventCategoryName}}</option>
-      </select> <span class="error">*</span>
-      &emsp; &emsp;
-      Duration <span class="border-2 border-gray-200 rounded-md p-1 px-2 bg-gray-100"> {{ eventDuration }} </span>
-      <br> <br>
-      Appointment Date&Time <span class="error">*</span> <br>
-      <input id="date" type="datetime-local" v-model="eventStartTime" class="border-2 border-gray-200 rounded-md p-1 px-2 mt-1" />
-    </div>
-    <br />
-    Add Note : 
-    <input
-      class="form-control"
-      type="text"
-      id="bookingname"
-      v-model="note"
-    />
-  </div>
 
-  <div id="click">
+<template>
+  <div class="ml-44">
+    <div id="add" class="">
+      <div class="error pb-2" v-if="isBlank">
+        Please fill out the information completely. |
+        กรุณากรอกข้อมูลให้ครบด้วยค่ะ
+      </div>
+      <div class="error pb-2" v-if="isInvalidEmail">
+        Enter incorrect email information. |
+        กรุณากรอก email ให้ถูกต้อง (ตัวอย่าง: example@gmail.com)
+      </div>
+      <div class="error pb-2" v-if="isInvalidDateFuture">
+      Appointment time in the past. |
+      วันเวลานัดหมายไม่ถูกต้อง 
+      </div>
+      <div class="error pb-2" v-if="isInvalidOverLab">
+      Have an appointment during this time. |
+      มีการนัดในช่วงเวลานี้
+      </div>
+      <div>
+        Booking Name <span class="error">*</span>
+        <input
+          class="form-control mb-3"
+          type="text"
+          v-model="bookingName"
+          maxlength="100"
+        />
+
+        <div>
+          <label for="email">Booking Email address</label>
+          <span class="error"> *</span>
+          <div class="flex">
+            <input
+              id="email"
+              name="email"
+              type="email"
+              class="form-control mb-3"
+              v-model="bookingEmail"
+              maxlength="100"
+            />
+            <span class="ml-3 mt-2 text-xl"> </span>
+          </div>
+        </div>
+      </div>
+      <div class="selectcategory">
+        <select
+          v-model="eventCategory"
+          class="border-2 border-gray-200 rounded-md p-1"
+        >
+          <option value="" disabled>Please Select Clinic Category</option>
+          <option
+            v-for="category in categories"
+            :key="category.id"
+            :value="category"
+          >
+            {{ category.eventCategoryName }}
+          </option>
+        </select>
+        <span class="error">*</span> &emsp; &emsp; Duration
+        <span class="border-2 border-gray-200 rounded-md p-1 px-2 bg-gray-100">
+          {{ eventDuration }}
+        </span>
+        <br />
+        <br />
+        Appointment Date&Time <span class="error">*</span> <br />
+        <input
+          id="date"
+          type="datetime-local"
+          v-model="eventStartTime"
+          class="border-2 border-gray-200 rounded-md p-1 px-2 mt-1"
+        />
+      </div>
+      <br />
+      Add Note :
+      <input
+        class="form-control"
+        type="text"
+        id="bookingname"
+        v-model="note"
+        maxlength="500"
+      />
+    </div>
+
+    <div id="click">
       <button
         type="button"
         class="btn btn-dark"
@@ -132,29 +294,57 @@ const goAllEvent = () => appRouter.push({name: 'ListAll'})
     </div>
   </div>
 </template>
- 
+
 <style>
 #add {
   position: fixed;
-  width: 1115px;
+  width: 1200px;
   height: 550px;
   padding: 30px 40px;
-  background-color: rgb(255, 255, 255, 0.5);  
+  background-color: rgb(255, 255, 255, 0.5);
   color: black;
 }
 .selectcategory {
   margin-top: 25px;
 }
 
-
-#click{
+#click {
   position: absolute;
   margin-left: 60px;
   margin-top: 470px;
 }
 
-.error{
+.error {
   color: red;
 }
+input:invalid + span::before {
+  content: '✘';
+  color: red;
+}
+input:valid + span::before {
+  content: '✔';
+  color: green;
+}
 
+.pagination {
+  display: inline-block;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.pagination a.active {
+  background-color: #4caf50;
+  color: white;
+  border-radius: 5px;
+}
+
+.pagination a:hover:not(.active) {
+  background-color: #ddd;
+  border-radius: 5px;
+}
 </style>

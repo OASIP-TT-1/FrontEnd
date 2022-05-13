@@ -1,15 +1,36 @@
-<script setup></script>
+<script setup>
+
+</script>
+
+
 
 <template>
   <!-- <div>List By Category ▶</div> -->
 
   <div style="width: 110%" class="grid grid-cols-3 gap-3 ml-80 mt-2">
-    <img src="../assets/images/back.png" />
-    <img src="../assets/images/front.png" />
-    <img src="../assets/images/data.png" />
-    <img src="../assets/images/dev.png" class="ml-32" />
-    <img src="../assets/images/project.png" class="ml-32" />
+
+    <router-link :to="{ name: 'ListByCategory', params: {id: 1} }">
+      <img src="../assets/images/project.png" />
+    </router-link>
+
+    <router-link :to="{ name: 'ListByCategory', params: {id: 2} }">
+      <img src="../assets/images/dev.png" />
+    </router-link>   
+
+    <router-link :to="{ name: 'ListByCategory', params: {id: 3} }">
+      <img src="../assets/images/data.png" />
+    </router-link>    
+
+    <router-link :to="{ name: 'ListByCategory', params: {id: 4} }">
+      <img src="../assets/images/front.png" class="ml-32" />
+    </router-link> 
+
+    <router-link :to="{ name: 'ListByCategory', params: {id: 5} }">
+      <img src="../assets/images/back.png" class="ml-32" />
+    </router-link>
+    
   </div>
+
 </template>
 
 <style scoped>

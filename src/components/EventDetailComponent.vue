@@ -1,41 +1,34 @@
 <script setup>
 import { ref , computed } from 'vue'
 import { useRouter } from 'vue-router'
-import Reschedule from '../components/Reschedule.vue'
 
-// defineEmits(['rescheduleEvent'])
+// defineEmits(['formatDate', 'formatTime', 'formatDateTime'])
 const props = defineProps({
   event: {
     type: Object,
+    require: true
+  },
+  events: {
+    type: Array,
     require: true
   }
 })
 
 const event = computed(() => props.event)
+const events = computed(() => props.events)
 const isEditMode = ref(false)
+console.log(events.value)
 
 const appRouter = useRouter()
 const goBack = () => appRouter.go(-1)
 
+let currentDateTime = ref('')
 const newStartTime = ref('')
+// const newStartTime = computed(() => formatDateTime(event.value.eventStartTime))
 const newNote = ref(event.value.eventNote)
-const isBlank = ref(false)
-// const updateData = computed(() => { return {eventStartTime: newStartTime, eventNote: newNote}})
-
-const monthNames = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December'
-]
+let isBlank = ref(false)
+let isInvalidDateFuture = ref(false)
+let isInvalidOverLab = ref(false)
 
 const formatDate = (dateTime) => {
   return dateTime.toLocaleString('en-US', {day: '2-digit', month: 'long', year: 'numeric'})
@@ -45,15 +38,72 @@ const formatTime = (dateTime) => {
   return dateTime.toLocaleString('th-Th', {hour: '2-digit', minute: '2-digit', })
 }
 
+const formatDateTime = (dateTime) => {
+  let options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'}
+  let tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+  const formatDateTime = new Date(dateTime-tzoffset).toISOString().slice(0, -8);
+  return formatDateTime
+}
+
+const validateDateFuture = (dateTime) => {
+  const currentDateTime = new Date()
+  console.log(currentDateTime)
+  dateTime = new Date(dateTime)
+  console.log(dateTime)
+
+  return dateTime > currentDateTime ? true : false
+
+}
+
+const validateNonOverlab = (category, duration, startDTNew) => {
+  filterCategory(category)
+  console.log(filterEvents.value)
+
+  startDTNew = new Date(startDTNew)
+  let endDTNew = new Date(startDTNew.getTime() + Number(duration)*60000)
+  
+  for(let event of filterEvents.value) {
+    const endDTOld = new Date(new Date(event.eventStartTime.getTime() + Number(duration)*60000))
+    const startDangerRange = new Date(new Date(event.eventStartTime.getTime() - Number(duration)*60000))
+
+    if(startDTNew > endDTOld) {
+      return true
+    }else {
+      if(startDTNew < startDangerRange) { return true }
+      else { return false }
+    }
+  }
+}
+
+let filterEvents = ref([]) 
+const filterCategory = (category) => {
+    filterEvents.value = events.value.filter((event) => {
+      return event.eventCategoryName == category
+    })
+}
+
 const confirm = () => {
+  // console.log(formatDateTime(event.value.eventStartTime))
   if(newStartTime.value == ''){
     isBlank.value = true
+    isInvalidDateFuture.value = false
+    isInvalidOverLab.value = false
+  }else if(!validateDateFuture(newStartTime.value)) {
+    isInvalidDateFuture.value = true
+    isBlank.value = false 
+    isInvalidOverLab.value = false
+  }else if(!validateNonOverlab(event.value.eventCategory.eventCategoryName, event.value.eventCategory.eventDuration, newStartTime.value)) {
+    console.log('เข้า')
+    isInvalidOverLab.value = true
+    isInvalidDateFuture.value = false
+    isBlank.value = false
   }else {
     console.log(typeof newStartTime.value)
     const date = new Date(newStartTime.value)
+    console.log(date)
     const updateStartTime = [
       date.getFullYear(),
-      date.getMonth(),
+      date.getMonth()+1,
       date.getDate(),
       date.getHours(),
       date.getMinutes()
@@ -64,12 +114,9 @@ const confirm = () => {
     console.log(event.value.id)
 
     event.value.eventStartTime = date
-    event.value.eventNote = newNote.value
-  
+    event.value.eventNote = newNote.value 
     rescheduleEvent(updateStartTime, updateNote, event.value.id)
   }
-  
-  
 }
 
 const rescheduleEvent = async (updateStartTime, updateNote, eventId) => {
@@ -94,14 +141,20 @@ const cancel = () => {
   newStartTime.value = ''
   newNote.value = event.value.eventNote
   isEditMode.value = false
+  isBlank.value = false
+  isInvalidDateFuture = false
 }
-const editMode = () => isEditMode.value = true
+const editMode = () => {
+  newStartTime.value = formatDateTime(event.value.eventStartTime)
+  console.log(newStartTime.value)
+  isEditMode.value = true
+}
 
 </script>
 
 <template>
   <div id="back">
-    <button type="button" class="btn btn-default btn-xs" @click="goBack">
+    <button type="button" class="btn btn-default btn-xs text-white" @click="goBack">
       &lt; back
     </button>
   </div>
@@ -116,7 +169,7 @@ const editMode = () => isEditMode.value = true
       <br />
       <h3>{{ event.bookingName }}</h3>
       <p>{{ event.bookingEmail }}</p>
-      <h5 class="ml-3 text-sm">{{ event.eventCategoryName }}</h5>
+      <h5 class="ml-3 text-sm">{{ event.eventCategory.eventCategoryName }}</h5>
     </div>
 
     <div class="basis-1/2 p-10" v-if="!isEditMode">
@@ -132,8 +185,9 @@ const editMode = () => isEditMode.value = true
 
       <p class="font-semibold">Note :</p>
 
-      <p v-if="event.eventNote != null">{{ event.eventNote }}</p>
-      <p v-else>no note</p>
+      <!-- <p v-if="event.eventNote != undefined || event.eventNote != '' || event.eventNote != null">{{ event.eventNote }}</p>
+      <p v-else>no note</p> -->
+      <p>{{ event.eventNote }}</p>
 
       <button
         id="reschedule"
@@ -147,12 +201,24 @@ const editMode = () => isEditMode.value = true
     <!-- edit mode -->
     <!-- <Reschedule :event="event" v-if="isEditMode"></Reschedule> -->
     <div class="basis-1/2 p-10" v-if="isEditMode">
-    <p class="text-red-600" v-if="isBlank">Please select date and time or click cancel</p>
+    <p class="text-red-600" v-if="isBlank">
+    Please select date and time or click cancel. |
+    กรุณาเลือกระบุเวลาใหม่ที่ต้องการเลือก หรือ กดยกเลิก
+    </p>
+    <p class="text-red-600" v-if="isInvalidDateFuture">
+      Appointment time in the past. |
+      วันเวลานัดหมายไม่ถูกต้อง
+    </p>
+    <p class="text-red-600" v-if="isInvalidOverLab">
+      Have an appointment during this time. |
+      มีการนัดในช่วงเวลานี้
+    </p>
       <div class="mb-4">
         Appointment Date / Time <span class="text-red-600 text-xl">*</span><br />
         <input
           id="date"
           type="datetime-local"
+          :min="currentDateTime"
           v-model="newStartTime"
           class="border-2 border-gray-200 rounded-md p-1 px-2 mt-1"
         />
@@ -178,6 +244,7 @@ const editMode = () => isEditMode.value = true
         </button>
       </div>
     </div>
+    <!-- {{events}} -->
    
   </div>
 </template>
