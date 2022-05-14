@@ -4,7 +4,6 @@ import { ref, onBeforeMount, onBeforeUpdate, onUpdated } from 'vue'
 import EventDetailComponent from '../components/EventDetailComponent.vue'
 let { params } = useRoute()
 
-// const eventId = params.id
 const eventId = params.id
 const event = ref({})
 const getEventById = async (eventId) => {
@@ -15,7 +14,7 @@ const getEventById = async (eventId) => {
     event.value = await res.json()
     event.value.eventStartTime = new Date(event.value.eventStartTime)
     // console.log(event.value.eventStartTime.toLocaleString('en-US', {day: '2-digit', year: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit', }));
-    console.log(event.value)
+    // console.log(event.value)
   } else console.log('error, cannot get data')
 }
 
@@ -37,7 +36,7 @@ const getEvents = async () => {
 onBeforeMount(async () => {  
   await getEventById(eventId)
   await getEvents()
-  console.log(events)
+  console.log(events.value)
 })
 
 // console.log(formatDateTime(event.value.eventStartTime))
@@ -49,8 +48,8 @@ onBeforeMount(async () => {
 <template>
 
   <div class="ml-40">
-    <EventDetailComponent :event="event" :events="events" @formatDate="formatDate" @formatTime="formatTime" @formatDateTiem="formatDateTime">
-    </EventDetailComponent>
+    <EventDetailComponent :event="event" :events="events"></EventDetailComponent>
+    <!-- <EventDetailComponent :event="event" :events="events" @formatDate="formatDate" @formatTime="formatTime" @formatDateTiem="formatDateTime"></EventDetailComponent> -->
   </div>
 </template>
 

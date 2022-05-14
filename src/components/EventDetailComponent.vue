@@ -18,6 +18,8 @@ const event = computed(() => props.event)
 const events = computed(() => props.events)
 const isEditMode = ref(false)
 console.log(events.value)
+console.log(event.value)
+console.log(props.events)
 
 const appRouter = useRouter()
 const goBack = () => appRouter.go(-1)
@@ -63,22 +65,47 @@ const validateNonOverlab = (category, duration, startDTNew) => {
   let endDTNew = new Date(startDTNew.getTime() + Number(duration)*60000)
   
   for(let event of filterEvents.value) {
-    const endDTOld = new Date(new Date(event.eventStartTime.getTime() + Number(duration)*60000))
-    const startDangerRange = new Date(new Date(event.eventStartTime.getTime() - Number(duration)*60000))
+    console.log(checkOverLab(startDTNew, event.eventStartTime, duration))
+    if(!checkOverLab(startDTNew, event.eventStartTime, duration)) return false
+    // const endDTOld = new Date(new Date(event.eventStartTime.getTime() + Number(duration)*60000))
+    // const startDangerRange = new Date(new Date(event.eventStartTime.getTime() - Number(duration)*60000))
+
+    // if(startDTNew > endDTOld) {
+    //   return true
+    // }else {
+    //   if(startDTNew < startDangerRange) { return true }
+    //   else { return false }
+    // }
+  }
+  return true
+}
+
+const checkOverLab = (startDTNew, startDTOld, duration) => {
+  const endDTOld = new Date(new Date(startDTOld.getTime() + Number(duration)*60000))
+  const startDangerRange = new Date(new Date(startDTOld.getTime() - Number(duration)*60000))
+
+  console.log(startDTOld)
 
     if(startDTNew > endDTOld) {
+      // console.log('true วันไม่ตรงกัน')
       return true
     }else {
-      if(startDTNew < startDangerRange) { return true }
-      else { return false }
+      if(startDTNew < startDangerRange) {
+        // console.log('true วันไม่ตรงกัน')    
+        return true
+      }else {
+        // console.log('flase วันตรงกัน')
+        return false
+      }
     }
-  }
+
 }
+
 
 let filterEvents = ref([]) 
 const filterCategory = (category) => {
-    filterEvents.value = events.value.filter((event) => {
-      return event.eventCategoryName == category
+    filterEvents.value = events.value.filter((e) => {
+      return e.eventCategoryName == category && e.id !== event.value.id
     })
 }
 

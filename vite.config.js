@@ -7,11 +7,10 @@ export default defineConfig({
   // server: {
   //   proxy: {
   //     '/api': {
-  //       target: 'http://10.4.56.124:8080',
-  //       // "target": `${import.meta.env.VITE_BACK_URL}`,
+  //       target: 'http://202.44.9.103:8080/tt1/',
   //       // "pathRewrite": { '^/api': '' },
   //       changeOrigin: true,
-  //       // secure: false,
+  //       secure: false,
   //       rewrite: (path) => {
   //         console.log(path);
   //         return path.replace('/^\/api/', '')
@@ -19,7 +18,7 @@ export default defineConfig({
   //       // rewrite: (path) => path.replace(/^\/api/, '')
   //     }
   //   },
-  //   // port: 80
+  //   port: 80
   // }
 })
 

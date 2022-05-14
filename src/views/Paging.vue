@@ -17,7 +17,7 @@ const getEvents = async () => {
   // const res = await fetch('http://localhost:8080/api/events')
   // const res = await fetch('http://10.4.56.124:8081/api/events')
   const res = await fetch(
-    `${import.meta.env.VITE_BACK_URL}api/events/page?page=${
+    `${import.meta.env.VITE_BACK_URL}/events/page?page=${
       currentPage - 1
     }&pageSize=6`
   )

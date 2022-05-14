@@ -141,8 +141,35 @@ const validateNonOverlab = (category, duration, startDTNew) => {
   // console.log(endDTNew)
   
   for(let event of filterEvents.value) {
-    const endDTOld = new Date(new Date(event.eventStartTime.getTime() + Number(duration)*60000))
-    const startDangerRange = new Date(new Date(event.eventStartTime.getTime() - Number(duration)*60000))
+    console.log(checkOverLab(startDTNew, event.eventStartTime, duration))
+    if(!checkOverLab(startDTNew, event.eventStartTime, duration)) return false
+
+    // const endDTOld = new Date(new Date(event.eventStartTime.getTime() + Number(duration)*60000))
+    // const startDangerRange = new Date(new Date(event.eventStartTime.getTime() - Number(duration)*60000))
+    // // console.log(event.eventStartTime)
+    // // console.log(startDangerRange)
+    // // console.log(endDTOld)
+
+    // if(startDTNew > endDTOld) {
+    //   // console.log('true วันไม่ตรงกัน')
+    //   return true
+    // }else {
+    //   if(startDTNew < startDangerRange) {
+    //     // console.log('true วันไม่ตรงกัน')    
+    //     return true
+    //   }else {
+    //     // console.log('flase วันตรงกัน')
+    //     return false
+    //   }
+    // }
+  }
+  // startDTNew = new Date(startDTNew)
+  return true
+}
+
+const checkOverLab = (startDTNew, startDTOld, duration) => {
+  const endDTOld = new Date(new Date(startDTOld.getTime() + Number(duration)*60000))
+  const startDangerRange = new Date(new Date(startDTOld.getTime() - Number(duration)*60000))
     // console.log(event.eventStartTime)
     // console.log(startDangerRange)
     // console.log(endDTOld)
@@ -159,9 +186,7 @@ const validateNonOverlab = (category, duration, startDTNew) => {
         return false
       }
     }
-  }
-  // startDTNew = new Date(startDTNew)
-  // // return true
+
 }
 
 const filterCategory = (category) => {
