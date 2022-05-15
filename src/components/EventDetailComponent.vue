@@ -142,11 +142,11 @@ const confirm = () => {
 
     event.value.eventStartTime = date
     event.value.eventNote = newNote.value 
-    rescheduleEvent(updateStartTime, updateNote, event.value.id)
+    rescheduleEvent(updateStartTime, updateNote, event.value.eventCategory, event.value.id)
   }
 }
 
-const rescheduleEvent = async (updateStartTime, updateNote, eventId) => {
+const rescheduleEvent = async (updateStartTime, updateNote, eventCategory, eventId) => {
   const res = await fetch(`${import.meta.env.VITE_BACK_URL}/events/reschedule/${eventId}`, {
     method: 'PUT',
     headers: {
@@ -154,7 +154,8 @@ const rescheduleEvent = async (updateStartTime, updateNote, eventId) => {
     },
     body: JSON.stringify({
       eventStartTime: updateStartTime,
-      eventNote: updateNote
+      eventNote: updateNote,
+      eventCategory: eventCategory
     })
   })
   if (res.status === 200) {
