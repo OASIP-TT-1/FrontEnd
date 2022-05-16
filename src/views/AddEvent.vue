@@ -62,7 +62,7 @@ const addEvent = () => {
   ) {
     isBlank.value = true
     isInvalidEmail.value = false
-    isInvalidDateFuture.value = true
+    isInvalidDateFuture.value = false
     isInvalidOverLab.value = false
     console.log(isBlank.value)
   } else if (!validateEmail(bookingEmail.value)) {
