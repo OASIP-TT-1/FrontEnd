@@ -19,53 +19,16 @@
         <!-- <router-link :to="{ name: 'ListAll'}"> -->
           <button class="navMenu p-2 px-3 hover:rounded-lg">List All Event</button>
         </router-link>
-
         <router-link :to="{ name: 'Category' }">
           <button class="navMenu p-2 px-3 hover:rounded-lg">List By Category</button>
+        </router-link>
+        <router-link :to="{ name: 'ListByDate' }">
+          <button class="navMenu p-2 px-3 hover:rounded-lg">List By Date</button>
         </router-link>
       </div>
     </div>
 
     <div class="flex flex-row">
-      <!-- <div id="box" class="">
-        <div>
-          <div class="">
-            <div id="option">
-
-              <p style="font-size: 10px; color: #7c7c7c">List by Category -</p>
-
-              <div class="grid grid-cols-2">
-                <img
-                  class="cursor-pointer"
-                  src="./assets/images/front1.png"
-                  width="170"
-                />
-                <img
-                  class="cursor-pointer"
-                  src="./assets/images/back1.png"
-                  width="170"
-                />
-                <img
-                  class="cursor-pointer"
-                  src="./assets/images/data1.png"
-                  width="170"
-                />
-                <img
-                  class="cursor-pointer"
-                  src="./assets/images/dev1.png"
-                  width="170"
-                />
-                <img
-                  class="cursor-pointer"
-                  src="./assets/images/project1.png"
-                  width="170"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
-
       <div id="listallevent" class="basis-1/2 mt-6 ml-5">
         <div>
           <!-- <router-view> </router-view> -->

@@ -27,8 +27,8 @@ console.log(date1 > date2)
             
           </div>
 
-          <div class="ml-40 -mt-80">
-            <img src="../assets/images/home1.png">
+          <div class="ml-72 -mt-80" style="width: 70%;">
+            <img src="../assets/images/home2.png">
           </div>
         </div>
 

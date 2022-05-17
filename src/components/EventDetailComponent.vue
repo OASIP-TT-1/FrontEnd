@@ -67,15 +67,6 @@ const validateNonOverlab = (category, duration, startDTNew) => {
   for(let event of filterEvents.value) {
     console.log(checkOverLab(startDTNew, event.eventStartTime, duration))
     if(!checkOverLab(startDTNew, event.eventStartTime, duration)) return false
-    // const endDTOld = new Date(new Date(event.eventStartTime.getTime() + Number(duration)*60000))
-    // const startDangerRange = new Date(new Date(event.eventStartTime.getTime() - Number(duration)*60000))
-
-    // if(startDTNew > endDTOld) {
-    //   return true
-    // }else {
-    //   if(startDTNew < startDangerRange) { return true }
-    //   else { return false }
-    // }
   }
   return true
 }

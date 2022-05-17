@@ -6,6 +6,7 @@ import ListCategory from '../views/ListCategory.vue'
 import ListByCategory from '../views/ListByCategory.vue'
 import Home from '../views/Home.vue'
 import Page from '../views/Paging.vue'
+import ListByDate from '../views/ListByDate.vue'
 
 const history = createWebHistory('/tt1/')
 const routes = [
@@ -15,6 +16,7 @@ const routes = [
     { path: '/events/add', name: 'AddEvent', component: AddEvent },
     { path: '/categories', name: 'Category', component: ListCategory },
     { path: '/categories/:id', name: 'ListByCategory', component: ListByCategory },
+    { path: '/date', name: 'ListByDate', component: ListByDate },
     { path: '/events/page/:page', name: 'Page', component: Page }
     // { path: '/important', name: 'Important', component: ImportantList },
     // { 

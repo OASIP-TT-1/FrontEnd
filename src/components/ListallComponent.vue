@@ -18,7 +18,7 @@ const formatTime = (dateTime) => {
 </script>
  
 <template>
-<div class="ml-36">
+<div>
     <div id="no-events" v-show="events.length == 0">
       <h1 class="mx-60 pt-60">No Scheduled Events</h1>
     </div>
@@ -60,19 +60,6 @@ const formatTime = (dateTime) => {
         <div></div>
       </div>
     </div>
-
-    <!-- <router-view :key="$route.fullPath"> </router-view> -->
-    <!-- <div class="page flex">
-      <button class="mr-3">&lt;&lt;</button>
-      <div v-for="page in totalPage">
-        <router-link :to="{ name: 'Page', params: {page: page} }">
-          <button class="pageBtn px-3 p-1 mx-2">{{ page }}</button>
-        </router-link>
-      </div>
-      <button class="ml-3">>></button>
-    </div> -->
-
-    
   </div>
 </template>
  

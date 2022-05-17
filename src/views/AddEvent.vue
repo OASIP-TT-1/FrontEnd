@@ -137,7 +137,7 @@ const validateNonOverlab = (category, duration, startDTNew) => {
   console.log(filterEvents.value)
 
   startDTNew = new Date(startDTNew)
-  let endDTNew = new Date(startDTNew.getTime() + Number(duration)*60000)
+  // let endDTNew = new Date(startDTNew.getTime() + Number(duration)*60000)
   // console.log(endDTNew)
   
   for(let event of filterEvents.value) {

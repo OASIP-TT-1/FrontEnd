@@ -47,8 +47,6 @@ const goBack = () => appRouter.push({ name: 'Category' })
 
 <template>
   <div class="ml-44">
-    <!-- <button @click="goBack">&lt; back</button> -->
-    <!-- <p>{{ filterEvents }}</p> -->
     <div v-show="filterEvents.length == 0" class="ml-32">
       <button @click="goBack">&lt; back</button>
       <div id="no-events" class="mt-2">
@@ -59,8 +57,6 @@ const goBack = () => appRouter.push({ name: 'Category' })
     <div v-show="filterEvents.length > 0">
       <button @click="goBack">&lt; back</button>
       <div id="have-events">
-        <!-- <h1 style="color: #5c5c5c">Have Scheduled Events</h1> -->
-
         <div
           id="showall"
           v-for="(event, index) in filterEvents"

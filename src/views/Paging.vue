@@ -4,7 +4,7 @@ import { ref, onBeforeMount } from 'vue'
 let { params } = useRoute()
 
 const currentPage = Number(params.page)
-const totalPage = ref(5)
+const totalPage = ref(0)
 
 const appRouter = useRouter()
 // const goBack = () => appRouter.go(-1)
@@ -14,8 +14,6 @@ const appRouter = useRouter()
 const response = ref([])
 const events = ref([])
 const getEvents = async () => {
-  // const res = await fetch('http://localhost:8080/api/events')
-  // const res = await fetch('http://10.4.56.124:8081/api/events')
   const res = await fetch(
     `${import.meta.env.VITE_BACK_URL}/events/page?page=${
       currentPage - 1
@@ -24,11 +22,11 @@ const getEvents = async () => {
   if (res.status === 200) {
     response.value = await res.json()
     events.value = response.value.content
+    totalPage.value = response.value.totalPages
     for (let event of events.value) {
       console.log(new Date('2022-05-24 11:11:00'))
       event.eventStartTime = new Date(event.eventStartTime)
       // totalPage.value = Number(response.value.totalPages)
-      console.log(totalPage.value)
       // const dd = new Date(event.eventStartTime)
       console.log(event.eventStartTime)
     }
@@ -38,7 +36,6 @@ const getEvents = async () => {
 }
 onBeforeMount(async () => {
   await getEvents()
-  console.log(response)
 })
 
 const formatDate = (dateTime) => {
@@ -78,7 +75,6 @@ const deleteEvent = async (eventId) => {
 
 <template>
   <!-- <h1>page : {{params.page}}</h1> -->
-  <!-- {{ response }} -->
   <div class="">
   <div class="ml-36">
     <div id="no-events" v-show="events.length == 0">
