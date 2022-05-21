@@ -274,6 +274,7 @@ const goAllEvent = () => appRouter.push({name: 'Page', params: {page: 1}})
           class="border-2 border-gray-200 rounded-md p-1 px-2 mt-1 bg-white"
         />
       </div>
+      <br>
       Add Note 
       <span class="lenght">500 character | 500 ตัวอักษร</span>
       <input

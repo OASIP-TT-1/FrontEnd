@@ -1,10 +1,12 @@
 <script setup>
 import { ref, onBeforeMount, computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import ListallComponent from '../components/ListallComponent.vue'
 
 const events = ref([])
 const filterEvents = ref([])
 const showNoEvent = ref('')
+const appRouter = useRouter()
 
 const getEvents = async () => {
   const res = await fetch(`${import.meta.env.VITE_BACK_URL}/events`)
@@ -24,8 +26,23 @@ onBeforeMount(async () => {
   console.log(events)
 })
 
-const deleteEvent = async (eventId) => {
-  let confirms = confirm('Do you want to delete?')
+const formatDate = (dateTime) => {
+  return dateTime.toLocaleString('en-US', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric'
+  })
+}
+
+const formatTime = (dateTime) => {
+  return dateTime.toLocaleString('th-TH', {
+    hour: '2-digit',
+    minute: '2-digit'
+  })
+}
+
+const deleteEvent = async (eventId, bookingName, eventStartTime) => {
+  let confirms = confirm(`Do you want to delete? \n"${bookingName}" \nAppointment : ${formatDate(eventStartTime)} ${formatTime(eventStartTime)}`)
   console.log(eventId)
   console.log(confirms)
   if (confirms) {
@@ -37,6 +54,7 @@ const deleteEvent = async (eventId) => {
     )
     if (res.status === 200) {
       events.value = events.value.filter((event) => event.id !== eventId)
+      appRouter.go(0)
       console.log('deleted successfully')
     } else console.log('error, cannot delete data')
   }
@@ -44,11 +62,6 @@ const deleteEvent = async (eventId) => {
 
 const optionSelected = ref('')
 const dateSelected = ref('')
-
-const formatDate = (dateTime) => {
-  const options = { year: 'numeric', month: 'numeric', day: 'numeric' }
-  return new Date(dateTime, options)
-}
 
 const search = () => {
   console.log(optionSelected.value)
@@ -58,6 +71,7 @@ const search = () => {
     filterEvents.value = events.value.filter(
       (item) => item.eventStartTime < currentDateTime
     )
+    filterEvents.value = filterEvents.value.reverse()
 
     if (filterEvents.value.length == 0) {
       showNoEvent.value = 'No Past Events'
@@ -91,6 +105,7 @@ const cancel = () => {
   filterEvents.value = events.value
   console.log(filterEvents.value)
 }
+
 </script>
 
 <template>
@@ -131,8 +146,8 @@ const cancel = () => {
       </div>
     </div>
 
-    <div id="no-events" class="" v-if="filterEvents.length == 0">
-      <h1 class="mx-60 pt-60">{{ showNoEvent }}</h1>
+    <div id="no-events" class="mt-7" v-if="filterEvents.length == 0">
+      <h1 class="pt-60">{{ showNoEvent }}</h1>
     </div>
 
     <div v-if="filterEvents.length > 0">
@@ -147,6 +162,8 @@ const cancel = () => {
 <style>
 #no-events {
   height: 32em;
+  width: 100%;
+  text-align: center;
 }
 
 #searchBar {

@@ -12,11 +12,6 @@ const props = defineProps({
 
 const showForm = ref(false)
 const categories = computed(() => props.categories)
-// const categoryName = computed(() => {
-//   categories.value.forEach((category) => {
-
-//   })
-// })
 
 const currentEdit = ref()
 const updateName = ref()

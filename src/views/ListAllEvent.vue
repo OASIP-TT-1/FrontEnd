@@ -25,8 +25,16 @@ onBeforeMount(async () => {
   
 })
 
-const deleteEvent = async (eventId) => {
-  let confirms = confirm('Do you want to delete?')
+const formatDate = (dateTime) => {
+  return dateTime.toLocaleString('en-US', {day: '2-digit', month: 'long', year: 'numeric'})
+}
+
+const formatTime = (dateTime) => {
+  return dateTime.toLocaleString('th-TH', {hour: '2-digit', minute: '2-digit', })
+}
+
+const deleteEvent = async (eventId, bookingName, eventStartTime) => {
+  let confirms = confirm(`Do you want to delete? \n"${bookingName}" \nAppointment : ${formatDate(eventStartTime)} ${formatTime(eventStartTime)}`)
   console.log(eventId)
   console.log(confirms)
   if(confirms){

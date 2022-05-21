@@ -36,11 +36,6 @@ const formatTime = (dateTime) => {
   })
 }
 
-// console.log(filterEvents())
-// const filterEvents = () => {
-//     return events.value.filter((event) => {return event.eventCategoryName == props.category})
-// }
-
 const appRouter = useRouter()
 const goBack = () => appRouter.push({ name: 'Category' })
 </script>
@@ -84,7 +79,7 @@ const goBack = () => appRouter.push({ name: 'Category' })
                 see more >
               </button>
             </router-link>
-            <div id="bin" @click="$emit('deleteEvent', event.id)">
+            <div id="bin" @click="$emit('deleteEvent', event.id, event.bookingName, event.eventStartTime)">
               <img src="../assets/images/trash.png" />
             </div>
           </div>

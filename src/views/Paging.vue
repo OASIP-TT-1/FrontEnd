@@ -53,8 +53,8 @@ const formatTime = (dateTime) => {
   })
 }
 
-const deleteEvent = async (eventId) => {
-  let confirms = confirm('Do you want to delete?')
+const deleteEvent = async (eventId, bookingName, eventStartTime) => {
+  let confirms = confirm(`Do you want to delete? \n"${bookingName}" \nAppointment : ${formatDate(eventStartTime)} ${formatTime(eventStartTime)}`)
   console.log(eventId)
   console.log(confirms)
   if (confirms) {
@@ -113,7 +113,7 @@ const deleteEvent = async (eventId) => {
               </button>
             </router-link>
 
-            <div id="bin" @click="deleteEvent(event.id)">
+            <div id="bin" @click="deleteEvent(event.id, event.bookingName, event.eventStartTime)">
               <img src="../assets/images/trash.png" />
             </div>
           </div>

@@ -52,7 +52,7 @@ const formatTime = (dateTime) => {
                 see more >
               </button>
             </router-link>
-            <div id="bin" @click="$emit('deleteEvent', event.id)">
+            <div id="bin" @click="$emit('deleteEvent', event.id, event.bookingName, event.eventStartTime)">
                 <img src="../assets/images/trash.png">
             </div>
           </div>
