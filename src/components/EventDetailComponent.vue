@@ -295,7 +295,7 @@ const editMode = () => {
 }
 
 #button {
-    padding-left: 85%;
+    padding-left: 80%;
     width: 125%;
     color: white;
 }
