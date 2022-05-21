@@ -4,12 +4,13 @@ import ListallComponent from '../components/ListallComponent.vue'
 
 const events = ref([])
 const filterEvents = ref([])
+const showNoEvent = ref('')
 
 const getEvents = async () => {
   const res = await fetch(`${import.meta.env.VITE_BACK_URL}/events`)
   if (res.status === 200) {
     events.value = await res.json()
-    filterEvents.value = events.value
+    filterEvents.value = events.value.reverse()
     for (let event of events.value) {
       event.eventStartTime = new Date(event.eventStartTime)
       // const dd = new Date(event.eventStartTime)
@@ -51,27 +52,37 @@ const formatDate = (dateTime) => {
 
 const search = () => {
   console.log(optionSelected.value)
-  // console.log(dateSelected.value)
-  // console.log(events.value)
-  // console.log(filterEvents.value)
   const currentDateTime = new Date()
   console.log(currentDateTime)
   if (optionSelected.value == 'past') {
     filterEvents.value = events.value.filter(
       (item) => item.eventStartTime < currentDateTime
     )
+
+    if (filterEvents.value.length == 0) {
+      showNoEvent.value = 'No Past Events'
+    }
   } else if (optionSelected.value == 'upcomming') {
     filterEvents.value = events.value.filter(
       (item) => item.eventStartTime > currentDateTime
     )
-  } else {
-      dateSelected.value = new Date(dateSelected.value)
-      filterEvents.value = events.value.filter((item) => {
-          return dateSelected.value.getYear() == item.eventStartTime.getYear() &&
-                 dateSelected.value.getMonth() == item.eventStartTime.getMonth() &&
-                 dateSelected.value.getDate() == item.eventStartTime.getDate()
-      })
 
+    if (filterEvents.value.length == 0) {
+      showNoEvent.value = 'No On-Going or Upcomming Events'
+    }
+  } else {
+    dateSelected.value = new Date(dateSelected.value)
+    filterEvents.value = events.value.filter((item) => {
+      return (
+        dateSelected.value.getYear() == item.eventStartTime.getYear() &&
+        dateSelected.value.getMonth() == item.eventStartTime.getMonth() &&
+        dateSelected.value.getDate() == item.eventStartTime.getDate()
+      )
+    })
+
+    if (filterEvents.value.length == 0) {
+      showNoEvent.value = 'No Schedule Events'
+    }
   }
 }
 
@@ -105,32 +116,40 @@ const cancel = () => {
       </div>
 
       <div class="" id="buttonsearch">
-        <button class="bg-green-700 p-2 px-3 rounded-md" @click="search">
+        <button
+          class="bg-green-600 hover:bg-green-700 p-2 px-3 rounded-md"
+          @click="search"
+        >
           search
         </button>
-        <button class="bg-red-700 p-2 px-3 ml-3 rounded-md" @click="cancel">
+        <button
+          class="bg-red-600 hover:bg-red-700 p-2 px-3 ml-3 rounded-md"
+          @click="cancel"
+        >
           cancle
         </button>
       </div>
     </div>
-    <div>
+
+    <div id="no-events" class="" v-if="filterEvents.length == 0">
+      <h1 class="mx-60 pt-60">{{ showNoEvent }}</h1>
+    </div>
+
+    <div v-if="filterEvents.length > 0">
       <ListallComponent
         :events="filterEvents"
         @deleteEvent="deleteEvent"
-
       ></ListallComponent>
     </div>
   </div>
 </template>
 
 <style>
-
-#searchdate {
-  /* margin-left: 150px; */
+#no-events {
+  height: 32em;
 }
 
 #searchBar {
   width: 170vh;
 }
-
 </style>

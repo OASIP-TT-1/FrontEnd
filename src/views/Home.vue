@@ -2,9 +2,9 @@
 import { ref } from 'vue'
 const eventStartTime = ref('')
 
-const date1 = new Date('2018-06-14T16:00')
+const date1 = new Date('2022-08-26 10:20:00')
 const date2 = new Date('2018-06-14T16:01')
-console.log(date1 > date2)
+console.log(date1)
 
 </script>
  
@@ -30,8 +30,8 @@ console.log(date1 > date2)
           <div class="ml-72 -mt-80" style="width: 70%;">
             <img src="../assets/images/home2.png">
           </div>
-        </div>
-
+        </div>      
+        <!-- <p>{{ test.trim() }}</p> -->
         
     </div>
 </template>

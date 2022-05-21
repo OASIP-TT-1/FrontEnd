@@ -89,7 +89,7 @@ const deleteEvent = async (eventId) => {
           id="showall"
           v-for="(event, index) in events"
           :key="index"
-          class="rounded-md p-4 my-3 w-96 color mr-2"
+          class="rounded-md p-4 my-2 w-96 color mr-2"
         >
           <div id="detailevents" class="">
             <p class="text-xl font-bold">{{ event.bookingName }}</p>
@@ -151,6 +151,12 @@ const deleteEvent = async (eventId) => {
   width: 900px;
   height: 550px; */
 }
+
+#have-events {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+
 #paging {
   /* margin-left: 50%; */
   padding-left: 650px;

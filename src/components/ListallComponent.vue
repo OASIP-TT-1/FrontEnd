@@ -24,14 +24,14 @@ const formatTime = (dateTime) => {
     </div>
 
     <div>
-      <div id="have-events" v-show="events.length > 0">
+      <div v-show="events.length > 0" class="grid grid-cols-3 gap-1">
         <!-- <h1 style="color: #5c5c5c">Have Scheduled Events</h1> -->
         
         <div
           id="showall"
           v-for="(event, index) in events"
           :key="index"
-          class="rounded-md p-4 my-3 w-96 color mr-2"
+          class="rounded-md p-4 my-2 w-96 color"
         >
           <div id="detailevents" class="">
             <p class="text-xl font-bold">{{ event.bookingName }}</p>
@@ -60,6 +60,7 @@ const formatTime = (dateTime) => {
         <div></div>
       </div>
     </div>
+
   </div>
 </template>
  
@@ -75,6 +76,7 @@ const formatTime = (dateTime) => {
   display: grid;
   grid-template-columns: auto auto auto;
 }
+
 #showall {
   background-color: rgba(255, 255, 255, 0.4);
 }

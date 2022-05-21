@@ -78,7 +78,7 @@ const addEvent = () => {
     isInvalidOverLab.value = false
     isInvalidEmail.value = false
     isBlank.value = false
-  }else if(!validateNonOverlab(eventCategory.value.eventCategoryName, eventCategory.value.eventDuration, eventStartTime.value)) {
+  }else if(!validateNonOverlab(eventCategory.value.eventCategoryName, eventStartTime.value, eventDuration.value)) {
     console.log('เข้า false date')
     isInvalidOverLab.value = true
     isInvalidDateFuture.value = false
@@ -88,7 +88,7 @@ const addEvent = () => {
     console.log('add')
     const date = new Date(eventStartTime.value).toLocaleString('en-GB')
     const newEvent = {
-      bookingName: bookingName.value,
+      bookingName: bookingName.value.trim(),
       bookingEmail: bookingEmail.value,
       eventCategory: eventCategory.value,
       eventStartTime: date,
@@ -113,7 +113,7 @@ const addEventToDB = async (newEvent) => {
   if (res.status === 201) {
     console.log('added sucessfully')
     console.log(res)
-    goAllEvent()
+    goSuccess()
   } else console.log('error, cannot be added')
 }
 
@@ -132,7 +132,7 @@ const validateDateFuture = (dateTime) => {
 
 }
 
-const validateNonOverlab = (category, duration, startDTNew) => {
+const validateNonOverlab = (category, startDTNew, durationNew) => {
   filterCategory(category)
   console.log(filterEvents.value)
 
@@ -141,8 +141,8 @@ const validateNonOverlab = (category, duration, startDTNew) => {
   // console.log(endDTNew)
   
   for(let event of filterEvents.value) {
-    console.log(checkOverLab(startDTNew, event.eventStartTime, duration))
-    if(!checkOverLab(startDTNew, event.eventStartTime, duration)) return false
+    console.log(checkOverLab(startDTNew, event.eventStartTime, durationNew, event.eventDuration))
+    if(!checkOverLab(startDTNew, event.eventStartTime, durationNew, event.eventDuration)) return false
 
     // const endDTOld = new Date(new Date(event.eventStartTime.getTime() + Number(duration)*60000))
     // const startDangerRange = new Date(new Date(event.eventStartTime.getTime() - Number(duration)*60000))
@@ -167,9 +167,9 @@ const validateNonOverlab = (category, duration, startDTNew) => {
   return true
 }
 
-const checkOverLab = (startDTNew, startDTOld, duration) => {
-  const endDTOld = new Date(new Date(startDTOld.getTime() + Number(duration)*60000))
-  const startDangerRange = new Date(new Date(startDTOld.getTime() - Number(duration)*60000))
+const checkOverLab = (startDTNew, startDTOld, durationNew, durationOld) => {
+  const endDTOld = new Date(new Date(startDTOld.getTime() + Number(durationOld)*60000))
+  const startDanger = new Date(new Date(startDTOld.getTime() - Number(durationNew)*60000))
     // console.log(event.eventStartTime)
     // console.log(startDangerRange)
     // console.log(endDTOld)
@@ -178,7 +178,7 @@ const checkOverLab = (startDTNew, startDTOld, duration) => {
       // console.log('true วันไม่ตรงกัน')
       return true
     }else {
-      if(startDTNew < startDangerRange) {
+      if(startDTNew < startDanger) {
         // console.log('true วันไม่ตรงกัน')    
         return true
       }else {
@@ -196,23 +196,9 @@ const filterCategory = (category) => {
 }
 
 const appRouter = useRouter()
-const goAllEvent = () => appRouter.push({ name: 'Page', params: {page: 1} })
+const goSuccess = () => appRouter.push({ name: 'AddSuccess'})
+const goAllEvent = () => appRouter.push({name: 'Page', params: {page: 1}})
 
-let checked = ref(false)
-let checked_email = ref(false)
-let checked_time = ref(false)
-let checked_date = ref(false)
-let popup = ref(false)
-let create = ref(true)
-// const alldata = computed(() => {
-//   if(isFuture()){
-//     if(allDateTime.value.includes(checktime())){
-//       checked_time.value = true;
-//       return { status: 0 }
-//   }else{
-//   create.value = false;
-//   popup.value = true;
-// })
 </script>
 
 <template>
@@ -235,7 +221,7 @@ let create = ref(true)
       มีการนัดในช่วงเวลานี้
       </div>
       <div>
-        Booking Name <span class="error">*</span>
+        Booking Name <span class="error">*</span> <span class="lenght">100 character | 100 ตัวอักษร</span>
         <input
           class="form-control mb-3"
           type="text"
@@ -246,6 +232,7 @@ let create = ref(true)
         <div>
           <label for="email">Booking Email address</label>
           <span class="error"> *</span>
+          <span class="lenght"> 100 character | 100 ตัวอักษร</span>
           <div class="flex">
             <input
               id="email"
@@ -273,7 +260,7 @@ let create = ref(true)
             {{ category.eventCategoryName }}
           </option>
         </select>
-        <span class="error">*</span> &emsp; &emsp; Duration
+        <span class="error"> *</span> &emsp; &emsp; Duration
         <span class="border-2 border-gray-200 rounded-md p-1 px-2 bg-gray-100">
           {{ eventDuration }}
         </span>
@@ -284,11 +271,11 @@ let create = ref(true)
           id="date"
           type="datetime-local"
           v-model="eventStartTime"
-          class="border-2 border-gray-200 rounded-md p-1 px-2 mt-1"
+          class="border-2 border-gray-200 rounded-md p-1 px-2 mt-1 bg-white"
         />
       </div>
-      <br />
-      Add Note :
+      Add Note 
+      <span class="lenght">500 character | 500 ตัวอักษร</span>
       <input
         class="form-control"
         type="text"
@@ -351,7 +338,12 @@ input:valid + span::before {
   color: green;
 }
 
-.pagination {
+.lenght {
+  color: grey;
+  font-size: 0.8em;
+}
+
+/* .pagination {
   display: inline-block;
 }
 
@@ -371,5 +363,5 @@ input:valid + span::before {
 .pagination a:hover:not(.active) {
   background-color: #ddd;
   border-radius: 5px;
-}
+} */
 </style>

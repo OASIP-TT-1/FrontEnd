@@ -57,23 +57,23 @@ const validateDateFuture = (dateTime) => {
 
 }
 
-const validateNonOverlab = (category, duration, startDTNew) => {
+const validateNonOverlab = (category, startDTNew, durationNew) => {
   filterCategory(category)
   console.log(filterEvents.value)
 
   startDTNew = new Date(startDTNew)
-  let endDTNew = new Date(startDTNew.getTime() + Number(duration)*60000)
+  // let endDTNew = new Date(startDTNew.getTime() + Number(durationNew)*60000)
   
   for(let event of filterEvents.value) {
-    console.log(checkOverLab(startDTNew, event.eventStartTime, duration))
-    if(!checkOverLab(startDTNew, event.eventStartTime, duration)) return false
+    console.log(checkOverLab(startDTNew, event.eventStartTime, durationNew, event.eventDuration))
+    if(!checkOverLab(startDTNew, event.eventStartTime, durationNew, event.eventDuration)) return false
   }
   return true
 }
 
-const checkOverLab = (startDTNew, startDTOld, duration) => {
-  const endDTOld = new Date(new Date(startDTOld.getTime() + Number(duration)*60000))
-  const startDangerRange = new Date(new Date(startDTOld.getTime() - Number(duration)*60000))
+const checkOverLab = (startDTNew, startDTOld, durationNew, durationOld) => {
+  const endDTOld = new Date(new Date(startDTOld.getTime() + Number(durationOld)*60000))
+  const startDangerRange = new Date(new Date(startDTOld.getTime() - Number(durationNew)*60000))
 
   console.log(startDTOld)
 
@@ -110,7 +110,7 @@ const confirm = () => {
     isInvalidDateFuture.value = true
     isBlank.value = false 
     isInvalidOverLab.value = false
-  }else if(!validateNonOverlab(event.value.eventCategory.eventCategoryName, event.value.eventCategory.eventDuration, newStartTime.value)) {
+  }else if(!validateNonOverlab(event.value.eventCategory.eventCategoryName, newStartTime.value, event.value.eventDuration)) {
     console.log('เข้า')
     isInvalidOverLab.value = true
     isInvalidDateFuture.value = false
@@ -146,6 +146,7 @@ const rescheduleEvent = async (updateStartTime, updateNote, eventCategory, event
     body: JSON.stringify({
       eventStartTime: updateStartTime,
       eventNote: updateNote,
+      eventDuration: event.value.eventDuration,
       eventCategory: eventCategory
     })
   })
@@ -188,10 +189,10 @@ const editMode = () => {
       <br />
       <h3>{{ event.bookingName }}</h3>
       <p>{{ event.bookingEmail }}</p>
-      <h5 class="ml-3 text-sm">{{ event.eventCategory.eventCategoryName }}</h5>
+      <h5 class="text-sm">{{ event.eventCategory.eventCategoryName }}</h5>
     </div>
 
-    <div class="basis-1/2 p-10" v-if="!isEditMode">
+    <div class="basis-1/2 p-10 ml-4" v-if="!isEditMode">
       <p class="font-semibold">Appointment Date / Time</p>
       <div>
         <p>Date : {{ formatDate(event.eventStartTime) }}</p>
@@ -269,11 +270,17 @@ const editMode = () => {
 </template>
 
 <style scoped>
+#back {
+  margin-left: 2%;
+  /* border: #383838 1px solid; */
+}
 #showdetail {
   background-color: rgba(255, 255, 255, 0.4);
   color: #383838;
-  width: 1175px;
+  width: 1100px;
   padding: 20px;
+  margin-left: 3%;
+  margin-top: 1%;
   /* height: px; */
 }
 
@@ -283,7 +290,7 @@ const editMode = () => {
 }
 
 #reschedule {
-  margin-left: 95%;
+  margin-left: 85%;
   color: white;
 }
 

@@ -20,10 +20,13 @@
           <button class="navMenu p-2 px-3 hover:rounded-lg">List All Event</button>
         </router-link>
         <router-link :to="{ name: 'Category' }">
-          <button class="navMenu p-2 px-3 hover:rounded-lg">List By Category</button>
+          <button class="navMenu p-2 px-3 hover:rounded-lg">Category</button>
         </router-link>
         <router-link :to="{ name: 'ListByDate' }">
           <button class="navMenu p-2 px-3 hover:rounded-lg">List By Date</button>
+        </router-link>
+        <router-link :to="{ name: 'AboutUs' }">
+          <button class="navMenu p-2 px-3 hover:rounded-lg">About Us</button>
         </router-link>
       </div>
     </div>

@@ -62,17 +62,6 @@ const deleteEvent = async (eventId) => {
 
 <style scoped>
 
-/* #no-events {
-  background-color: rgba(255, 255, 255, 0.4);
-  color: #5c5c5c;
-  width: 900px;
-  height: 550px;
-} */
-
-#have-events {
-  display: grid;
-  grid-template-columns: auto auto auto;
-}
 #showall {
   background-color: rgba(255, 255, 255, 0.4);
 }

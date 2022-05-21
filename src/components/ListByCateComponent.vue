@@ -61,7 +61,7 @@ const goBack = () => appRouter.push({ name: 'Category' })
           id="showall"
           v-for="(event, index) in filterEvents"
           :key="index"
-          class="rounded-md p-4 my-3 w-96 color mr-2"
+          class="rounded-md p-4 my-1 w-96 color mr-2"
         >
           <div id="detailevents" class="">
             <p class="text-xl font-bold">{{ event.bookingName }}</p>
@@ -95,4 +95,6 @@ const goBack = () => appRouter.push({ name: 'Category' })
   </div>
 </template>
 
-<style></style>
+<style scoped>
+
+</style>
