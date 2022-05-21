@@ -45,7 +45,7 @@ const goBack = () => appRouter.push({ name: 'Category' })
     <div v-show="filterEvents.length == 0" class="ml-32">
       <button @click="goBack">&lt; back</button>
       <div id="no-events" class="mt-2">
-        <h1 class="mx-60 pt-60">No Scheduled Events</h1>
+        <h1 class="pt-60">No Scheduled Events</h1>
       </div>
     </div>
 
@@ -91,5 +91,9 @@ const goBack = () => appRouter.push({ name: 'Category' })
 </template>
 
 <style scoped>
+#no-events {
+  width: 180%;
+  text-align: center;
+}
 
 </style>
