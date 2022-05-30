@@ -7,31 +7,19 @@ const currentPage = Number(params.page)
 const totalPage = ref(0)
 
 const appRouter = useRouter()
-// const goBack = () => appRouter.go(-1)
-  console.log(import.meta.env.VITE_BACK_URL)
-
 
 const response = ref([])
 const events = ref([])
-const getEvents = async () => {
-  const res = await fetch(
-    `${import.meta.env.VITE_BACK_URL}/events/page?page=${
-      currentPage - 1
-    }&pageSize=6`
-  )
+const getEvents = async () => { 
+  const res = await fetch(`${import.meta.env.VITE_BACK_URL}/events/page?page=${currentPage - 1}&pageSize=6`)
   if (res.status === 200) {
     response.value = await res.json()
     events.value = response.value.content
     totalPage.value = response.value.totalPages
     for (let event of events.value) {
-      console.log(new Date('2022-05-24 11:11:00'))
       event.eventStartTime = new Date(event.eventStartTime)
-      // totalPage.value = Number(response.value.totalPages)
-      // const dd = new Date(event.eventStartTime)
       console.log(event.eventStartTime)
     }
-    console.log(response.value)
-    console.log(res)
   } else console.log('error, cannot get data')
 }
 onBeforeMount(async () => {
@@ -74,7 +62,6 @@ const deleteEvent = async (eventId, bookingName, eventStartTime) => {
 </script>
 
 <template>
-  <!-- <h1>page : {{params.page}}</h1> -->
   <div class="">
   <div class="ml-36">
     <div id="no-events" v-show="events.length == 0">
@@ -83,8 +70,6 @@ const deleteEvent = async (eventId, bookingName, eventStartTime) => {
 
     <div>
       <div id="have-events" v-show="events.length > 0">
-        <!-- <h1 style="color: #5c5c5c">Have Scheduled Events</h1> -->
-
         <div
           id="showall"
           v-for="(event, index) in events"

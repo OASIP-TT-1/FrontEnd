@@ -54,15 +54,7 @@ const deleteEvent = async (eventId, bookingName, eventStartTime) => {
   <div>
     <ListallComponent :events="events" @deleteEvent="deleteEvent" ></ListallComponent>
     <router-view> </router-view>
-    <!-- <div class="page flex">
-      <button class="mr-3">&lt;&lt;</button>
-      <div v-for="page in totalPage">
-        <router-link :to="{ name: 'Page', params: {page: page} }">
-          <button class="pageBtn px-3 p-1 mx-2">{{ page }}</button>
-        </router-link>
-      </div>
-      <button class="ml-3">>></button>
-    </div> -->
+    
   </div>
   
 </template>

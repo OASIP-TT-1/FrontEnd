@@ -78,13 +78,9 @@ body {
 }
 
 .navMenu:hover {
-  /* border: white solid 2px; */
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* .navMenu:focus-within {
-  border: white solid 2px;
-} */
 
 .selectcategory {
   margin-top: 25px;

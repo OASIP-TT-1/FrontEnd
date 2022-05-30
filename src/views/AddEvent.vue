@@ -4,10 +4,7 @@ import { useRouter } from 'vue-router'
 
 const categories = ref([])
 const getCategory = async () => {
-  // const res = await fetch('http://localhost:8080/api/events')
-  // const res = await fetch('http://10.4.56.124:8081/api/categories')
   const res = await fetch(`${import.meta.env.VITE_BACK_URL}/categories`)
-
   if (res.status === 200) {
     categories.value = await res.json()
     console.log(categories.value)
@@ -52,7 +49,6 @@ let isInvalidDateFuture = ref(false)
 let isInvalidOverLab = ref(false)
 
 const addEvent = () => {
-  // console.log(validateEmail(bookingEmail.value))
   console.log(validateDateFuture(eventStartTime.value))
   if (
     bookingName.value == '' ||
@@ -100,13 +96,16 @@ const addEvent = () => {
   }
 }
 
+//ส่ง fetch
 const addEventToDB = async (newEvent) => {
   console.log(newEvent)
+  //ใช้ตัวแปร env แทนการเขียน path
   const res = await fetch(`${import.meta.env.VITE_BACK_URL}/events`, {
     method: 'POST',
     headers: {
       'content-type': 'application/json'
     },
+    //ยัด newEvent ลงใน body ส่งให้ backend
     body: JSON.stringify(newEvent)
   })
   console.log(res.status)
@@ -118,8 +117,6 @@ const addEventToDB = async (newEvent) => {
 }
 
 const validateEmail = (email) => {
-  // const re = /^(?=.{1,64}@)[\\p{L}0-9_-]+(\\.[\\p{L}0-9_-]+)*@[^-][\\p{L}0-9-]+(\\.[\\p{L}0-9-]+)*(\\.[\\p{L}]{2,})$/
-  // const re = /^(?=.{1,64}@)[\\p{L}0-9_-]+(\\.[\\p{L}0-9_-]+)*@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   const re =
     /^(([^<>()[\]\\.,;:\s*$&!#?@"]+(\.[^<>()[\]\\.,;:\s*$&!#?@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   return re.test(String(email).toLocaleLowerCase())
@@ -137,52 +134,24 @@ const validateNonOverlab = (category, startDTNew, durationNew) => {
   console.log(filterEvents.value)
 
   startDTNew = new Date(startDTNew)
-  // let endDTNew = new Date(startDTNew.getTime() + Number(duration)*60000)
-  // console.log(endDTNew)
   
   for(let event of filterEvents.value) {
     console.log(checkOverLab(startDTNew, event.eventStartTime, durationNew, event.eventDuration))
     if(!checkOverLab(startDTNew, event.eventStartTime, durationNew, event.eventDuration)) return false
-
-    // const endDTOld = new Date(new Date(event.eventStartTime.getTime() + Number(duration)*60000))
-    // const startDangerRange = new Date(new Date(event.eventStartTime.getTime() - Number(duration)*60000))
-    // // console.log(event.eventStartTime)
-    // // console.log(startDangerRange)
-    // // console.log(endDTOld)
-
-    // if(startDTNew > endDTOld) {
-    //   // console.log('true วันไม่ตรงกัน')
-    //   return true
-    // }else {
-    //   if(startDTNew < startDangerRange) {
-    //     // console.log('true วันไม่ตรงกัน')    
-    //     return true
-    //   }else {
-    //     // console.log('flase วันตรงกัน')
-    //     return false
-    //   }
-    // }
   }
-  // startDTNew = new Date(startDTNew)
   return true
 }
 
 const checkOverLab = (startDTNew, startDTOld, durationNew, durationOld) => {
   const endDTOld = new Date(new Date(startDTOld.getTime() + Number(durationOld)*60000))
   const startDanger = new Date(new Date(startDTOld.getTime() - Number(durationNew)*60000))
-    // console.log(event.eventStartTime)
-    // console.log(startDangerRange)
-    // console.log(endDTOld)
 
     if(startDTNew > endDTOld) {
-      // console.log('true วันไม่ตรงกัน')
       return true
     }else {
       if(startDTNew < startDanger) {
-        // console.log('true วันไม่ตรงกัน')    
         return true
       }else {
-        // console.log('flase วันตรงกัน')
         return false
       }
     }
@@ -344,25 +313,4 @@ input:valid + span::before {
   font-size: 0.8em;
 }
 
-/* .pagination {
-  display: inline-block;
-}
-
-.pagination a {
-  color: black;
-  float: left;
-  padding: 8px 16px;
-  text-decoration: none;
-}
-
-.pagination a.active {
-  background-color: #4caf50;
-  color: white;
-  border-radius: 5px;
-}
-
-.pagination a:hover:not(.active) {
-  background-color: #ddd;
-  border-radius: 5px;
-} */
 </style>
