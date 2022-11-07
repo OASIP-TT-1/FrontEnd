@@ -200,9 +200,8 @@ const editEventDetail = async (id, data) => {
     window.location.reload();
   } else if(res.status !== 200){
     const response = await res.json() 
-    console.log(res.statusText);
     Swal.fire(
-      `${res.statusText}`,
+      `${response.message}`,
       'Please Try again',
       'warning'
     ).then((res) => {
