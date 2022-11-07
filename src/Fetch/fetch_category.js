@@ -52,8 +52,9 @@ const editCategory = async (id, editCategory) => {
     await editCategory(editCategory);
     window.location.reload();
   } else if(res.status !== 200){
+    const response = await res.json()   
     Swal.fire(
-      `${res.status}`,
+      `${response.message}`,
       'Please Try again',
       'warning'
     ).then((res) => {

@@ -54,8 +54,11 @@ const editUserDetail = async (user, id) => {
     await editUserDetail(user, id);
     window.location.reload()
   } else if(res.status !== 200){
+    
+    const response = await res.json() 
+    console.log(response.message);
     Swal.fire(
-      `${res.status}`,
+      `${response.message}`,
       'Please Try again',
       'warning'
     ).then((res) => {
@@ -98,8 +101,9 @@ const deleteUser = async (id) => {
       })
       return res.status;
     }else if(res.status !== 200){
+      const response = await res.json() 
       Swal.fire(
-        `${res.status}`,
+        `${response.message}`,
         'Please Try again',
         'warning'
       ).then((res) => {

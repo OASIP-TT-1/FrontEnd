@@ -14,17 +14,25 @@ const getFileName = async (eventId) => {
     await refreshToken(localStorage.getItem("refreshToken"));
     await getFileName(eventId);
     window.location.reload();
-  } else if(res.status !== 200){
+  } 
+  else if (res.status === 500) {
+    console.log(res.statusText);
     Swal.fire(
-      `${res.status}`,
+      `Not found this event`,
       'Please Try again',
       'warning'
     ).then((res) => {
       window.location=document.referrer
     });
   }else {
-    console.log("Failed to execute! " + res.status);
-    return res.status;
+    const response = await res.json()   
+    Swal.fire(
+      `${response.message}`,
+      'Please Try again',
+      'warning'
+    ).then((res) => {
+      window.location=document.referrer
+    });
   }
 };
 
@@ -50,17 +58,26 @@ const downloadFile = async (eventId, filName) => {
     await refreshToken(localStorage.getItem("refreshToken"));
     await getUserDetail(id);
     window.location.reload();
-  } else if(res.status !== 200){
+  } 
+  else if (res.status === 500) {
+    console.log(res.statusText);
     Swal.fire(
-      `${res.status}`,
+      `Not found this event`,
       'Please Try again',
       'warning'
     ).then((res) => {
       window.location=document.referrer
     });
-  }else {
-    console.log("Failed to execute! " + res.status);
-    return res.status;
+  }
+  else {
+    const response = await res.json()   
+    Swal.fire(
+      `${response.message}`,
+      'Please Try again',
+      'warning'
+    ).then((res) => {
+      window.location=document.referrer
+    });
   }
 };
 

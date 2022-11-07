@@ -122,8 +122,9 @@ const deleteEvent = async (event) => {
         );
         return res.status;
       } else if(res.status !== 200){
+        const response = await res.json() 
         Swal.fire(
-          `${res.status}`,
+          `${response.message}`,
           'Please Try again',
           'warning'
         ).then((res) => {
@@ -138,28 +139,13 @@ const deleteEvent = async (event) => {
 
 const addNewEvent = async (data) => {
   const res = await fetch(`${import.meta.env.VITE_BACK_URL}/events`, {
-<<<<<<< HEAD
-<<<<<<< HEAD
     method: "POST",
     headers: {
-=======
-    // mode: "no-cors",
-    method: "POST",
-    headers: {
-      // "content-type": "application/json",
->>>>>>> main
-=======
-    // mode: "no-cors",
-    method: "POST",
-    headers: {
-      // "content-type": "application/json",
->>>>>>> e5ceec8 (test)
       Authorization: "Bearer " + localStorage.getItem("accessToken"),
     },
     body: data,
   })
   console.log(res.status);
-<<<<<<< HEAD
   if (res.status === 201) {
     console.log("Successfully executed! " + res.status);
     Swal.fire(
@@ -171,8 +157,9 @@ const addNewEvent = async (data) => {
     });
     return res.status;
   } else if(res.status !== 200){
+    const response = await res.json() 
     Swal.fire(
-      `${res.status}`,
+      `${response.message}`,
       'Please Try again',
       'warning'
     ).then((res) => {
@@ -186,28 +173,6 @@ const addNewEvent = async (data) => {
       text: response.message,
     });
   }
-=======
-  // const response = await res.json()
-  // console.log(response.message);
-
-  // if (res.status === 0) {
-  //   console.log("success");
-  // } else if (res.status === 400) {
-  //   console.log("bad");
-  // }
-
-  //   fetch(`${import.meta.env.VITE_BACK_URL}/events`, {
-  //     mode: 'no-cors',
-  //     method: "POST",
-  //     headers: {
-  //       "content-type": "application/json",
-  //       "Authorization": "Bearer " + localStorage.getItem("accessToken"),
-  //     },
-  //     body: data,
-  //   })
-  //   .then(res => console.log(res.status))
-  //   .then(data => console.log(data))
->>>>>>> main
 };
 
 const editEventDetail = async (id, data) => {
@@ -234,8 +199,10 @@ const editEventDetail = async (id, data) => {
     await editEventDetail(id,data);
     window.location.reload();
   } else if(res.status !== 200){
+    const response = await res.json() 
+    console.log(res.statusText);
     Swal.fire(
-      `${res.status}`,
+      `${res.statusText}`,
       'Please Try again',
       'warning'
     ).then((res) => {
@@ -250,7 +217,6 @@ const editEventDetail = async (id, data) => {
     });
   }
 };
-
 
 export {
   editEventDetail,
