@@ -1,46 +1,19 @@
 <script setup>
-
+  import Member_ComponentVue from '../components/Member_Component.vue';
 </script>
- 
+
 <template>
-    <div style="width: 130%" class="grid grid-cols-3 gap-10 ml-64 mt-5">
-        <div class="girl">
-            <img src="../assets/images/016.png">
-            <span>Chomkanok Chuenpapai</span> <br>
-            <span>63130500016</span> <br><br>
-            <a href="https://github.com/chomkanok" target="_blank">
-                <img src="../assets/images/git.png" width="30" class="git">
-            </a>
-        </div>
-        <div class="girl">
-            <img src="../assets/images/036.png">
-            <span>Nitchakarn Pasanee</span> <br>
-            <span>63130500036</span><br><br>
-            <a href="https://github.com/baimorn" target="_blank">
-                <img src="../assets/images/git.png" width="30" class="git">
-            </a>
-        </div>
-        <div class="girl">
-            <img src="../assets/images/134.png">
-            <span>Arisa Audomkhachonkitti</span> <br>
-            <span>63130500134</span><br><br>
-            <a href="http://github.com/arisa2545" target="_blank">
-                <img src="../assets/images/git.png" width="30" class="git">
-            </a>
-        </div>
+  <main class="m-3 my-8 col-12">
+    <div class="container justify-center px-1 mx-auto text-center col-12">
+      <h2 class="mb-3 text-5xl font-bold text-black uppercase col-12"> members </h2>
+      <h2 class="text-3xl font-bold text-black uppercase mb-28 col-12"> team : เหนื่อยก็พัก เจอบั๊กก็ค่อยแก้ </h2>
+      <div class="grid gap-8 m-6 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-3 md:m-2 sm:m-1">
+        <Member_ComponentVue :name="'PICHAYA PAIRIN'" :stdId="'63130500086'" :img="'game.jpg'" :facebook="'https://www.facebook.com/'"></Member_ComponentVue>
+        <Member_ComponentVue :name="'ARISA AUDOMKHACHONKITTI'" :stdId="'63130500134'" :img="'ice.jpg'"></Member_ComponentVue>
+        <Member_ComponentVue :name="'CHANANYA SINPHICHIT'" :stdId="'63130500140'" :img="'mod2.jpg'"></Member_ComponentVue>
+      </div>
     </div>
-
+  </main>
 </template>
- 
-<style>
-.girl {
-    text-align: center;
-    /* border: 1px solid black; */
-}
 
-.git {
-    margin-left: 45%;
-}
-
-
-</style>
+<style scoped></style>
